@@ -9,27 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventDestination extends Model
+class ArticleDestination extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
     protected $fillable = [
-        'id_destinations',
-        'name_event',
+        'judul_article',
         'slug',
-        'location_event',
-        'ratting_event_destination_acc',
-        'image_event',
-        'description_event_destination',
-        'date_event',
-        'price_event'
+        'image',
+        'body',
+        'ratting_article_acc'
     ];
 
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name_event',
+                'source' => 'judul_article',
             ]
         ];
     }
@@ -38,18 +34,13 @@ class EventDestination extends Model
     {
         parent::boot();
 
-        static::updating(function ($event) {
-            $event->slug = SlugService::createSlug($event, 'slug', $event->name_event);
+        static::updating(function ($articleDestination) {
+            $articleDestination->slug = SlugService::createSlug($articleDestination, 'slug', $articleDestination->judul_article);
         });
     }
 
-    /**
-     * Get all of the EventDestination for the Destination
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function UserRateDestination(): HasMany
     {
-        return $this->hasMany(UserRateDestination::class, 'id_event_destinations', 'id');
+        return $this->hasMany(UserRateDestination::class, 'id_artikel_destinations', 'id');
     }
 }

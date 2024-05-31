@@ -14,7 +14,7 @@ class DestinationsController extends Controller
     public function index(Request $request)
     {
         try {
-            $destinations = Destination::with(['fasilitas'])->get();
+            $destinations = Destination::with(['fasilitas', 'EventDestination', 'UserRateDestination'])->get();
             
             return response()->json([
                 'code' => 200,
@@ -94,6 +94,24 @@ class DestinationsController extends Controller
             ]);
 
             return ResponseFormatter::success($destination, 'destination Update', 200);
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
+        }
+    }
+
+
+    public function show($id) {
+        try {
+            $destination = Destination::with(['fasilitas'])->findOrFail($id);
+
+            if (!$destination) {
+                throw new Exception('destination Not Found');
+            }
+
+            
+            return ResponseFormatter::success($destination, 'destination Found', 200);
+
+
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);
         }

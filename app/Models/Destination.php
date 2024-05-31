@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Destination extends Model
@@ -45,16 +46,25 @@ class Destination extends Model
         });
     }
     
-    /**
-     * Get the fasilitas that owns the Destination
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function fasilitas(): BelongsTo
-    {
-        return $this->belongsTo(FasilitasDestination::class, 'id');
-    }
+    // /**
+    //  * Get the fasilitas that owns the Destination
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    //  */
+    // public function fasilitas(): BelongsTo
+    // {
+    //     return $this->belongsTo(FasilitasDestination::class, 'id', 'id_destinations');
+    // }
 
+    /**
+     * Get the fasilitas associated with the Destination
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function fasilitas(): HasOne
+    {
+        return $this->hasOne(FasilitasDestination::class, 'id_destinations', 'id');
+    }
 
     // /**
     //  * Get all of the comments for the Destination
@@ -63,6 +73,28 @@ class Destination extends Model
     //  */
     // public function fasilitas(): HasMany
     // {
-    //     return $this->hasMany(FasilitasDestination::class, 'id');
+    //     return $this->hasMany(FasilitasDestination::class, 'id_destinations', 'id');
     // }
+
+
+    /**
+     * Get all of the EventDestination for the Destination
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function EventDestination(): HasMany
+    {
+        return $this->hasMany(EventDestination::class, 'id_destinations', 'id');
+    }
+
+
+    /**
+     * Get all of the EventDestination for the Destination
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function UserRateDestination(): HasMany
+    {
+        return $this->hasMany(UserRateDestination::class, 'id_destinations', 'id');
+    }
 }
