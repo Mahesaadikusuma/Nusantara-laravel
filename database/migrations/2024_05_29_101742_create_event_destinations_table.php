@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug');
             
             $table->string('location_event');
-            $table->integer('ratting_event_destination_acc');
+            $table->double('ratting_event_destination_acc');
             $table->string('image_event')->nullable();
             $table->text('description_event_destination');
             $table->timestamp('date_event');

@@ -13,25 +13,12 @@ class DestinationsController extends Controller
 {
     public function index(Request $request)
     {
-        try {
-            $destinations = Destination::with(['fasilitas', 'EventDestination', 'UserRateDestination'])->get();
-            
-            return response()->json([
-                'code' => 200,
-                'status' => 'success',
-                'message' => 'destinations Found',
-                'data' => [
-                    'products' => $destinations,
-                ],
-            ], 200);
+        $destinations = Destination::with(['fasilitas', 'EventDestination', 'UserRateDestination'])->get();
+        return ResponseFormatter::success(
+            $destinations,
+            'destinations found'
+        );
 
-        } catch (Exception $e) {
-            return response()->json([
-                'code' => 500,
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ], 500);
-        }
     }
 
      public function create(Request $request)
@@ -74,7 +61,7 @@ class DestinationsController extends Controller
 
             if ($request->hasFile('thubmnail')) {
                 if ($destination->thubmnail) {
-                    Storage::disk('local')->delete('public/' . $destination->thubmnail);
+                    Storage::disk('public')->delete('public/' . $destination->thubmnail);
                 }   
 
 
@@ -100,9 +87,9 @@ class DestinationsController extends Controller
     }
 
 
-    public function show($id) {
+    public function show($slug) {
         try {
-            $destination = Destination::with(['fasilitas'])->findOrFail($id);
+            $destination = Destination::with(['fasilitas', 'EventDestination', 'UserRateDestination'])->where('slug', $slug)->firstOrFail();
 
             if (!$destination) {
                 throw new Exception('destination Not Found');

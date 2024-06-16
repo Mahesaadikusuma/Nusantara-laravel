@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('image')->nullable();
             $table->text('body');
-            $table->integer('ratting_article_acc');
+            $table->double('ratting_article_acc');
 
             $table->softDeletes();
             $table->timestamps();

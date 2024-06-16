@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('thubmnail');
             $table->integer('price');
-            $table->integer('ratting_destination_acc');
+            $table->double('ratting_destination_acc');
             $table->string('name_event_destination');
             $table->timestamp('date_event');
 

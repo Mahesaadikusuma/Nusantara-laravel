@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -51,5 +52,16 @@ class EventDestination extends Model
     public function UserRateDestination(): HasMany
     {
         return $this->hasMany(UserRateDestination::class, 'id_event_destinations', 'id');
+    }
+
+
+    /**
+     * Get the destination that owns the EventDestination
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function destination(): BelongsTo
+    {
+        return $this->belongsTo(Destination::class, 'id_destinations', 'id');
     }
 }

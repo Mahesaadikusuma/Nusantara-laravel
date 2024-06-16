@@ -43,6 +43,23 @@ class ArticleDestinationContoller extends Controller
         }
     }
 
+    public function show($slug) 
+    {
+        try {
+            $article = ArticleDestination::with(['UserRateDestination'])->where('slug', $slug)->firstOrFail();
+
+
+            if (!$article) {
+                throw new Exception("Article Destination Not Found", 1);
+            }
+
+            return ResponseFormatter::success($article, 'Article Destination Found', 200);
+
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
+        }
+    }
+
 
     public function create(Request $request)
     {

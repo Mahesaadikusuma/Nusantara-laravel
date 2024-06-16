@@ -14,7 +14,7 @@ class EventDestinationController extends Controller
     public function index(Request $request)
     {
         try {
-            $eventDestination = EventDestination::with('UserRateDestination')->get();
+            $eventDestination = EventDestination::with('UserRateDestination', 'destination')->get();
 
             return response()->json([
                 'code' => 200,
@@ -58,6 +58,21 @@ class EventDestinationController extends Controller
             }
 
             return ResponseFormatter::success($eventDestination, 'Event Destination Created', 200);
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
+        }
+    }
+
+    public function show($slug)
+    {
+        try {
+            $eventDestination = EventDestination::with('UserRateDestination')->where('slug', $slug)->firstOrFail();
+
+            if (!$eventDestination) {
+                throw new Exception("Event Destination Not Found", 1);
+            }
+
+            return ResponseFormatter::success($eventDestination, 'Event Destination Found', 200);
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);
         }

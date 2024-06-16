@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Helpers\ResponseFormatter;
+use App\Http\Requests\UserRateDestinationRequest;
 use App\Models\FasilitasDestination;
 use App\Models\UserRateDestination;
 use Exception;
@@ -35,7 +36,7 @@ class UserRateDestinationController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function create(UserRateDestinationRequest $request)
     {
         try {
             $user = Auth::user();
